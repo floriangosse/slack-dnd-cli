@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+
+set -o errexit
+set -o nounset
+
+COMMAND=${1:-}
+
+print_usage () {
+    echo "Usage: start-dnd [start|end]"
+    echo
+    echo "    start [duration]  Starts \"Do not Disturb\" for the defined duration"
+    echo "    end               Ends current \"Do not Disturb\" session"
+    echo
+    echo
+    echo "Environment variables:"
+    echo
+    echo "    SLACK_TOKEN       Contains the Slack authentication token which should be"
+    echo "                      used to communicate with the Slack API."
+}
+
+if ! hash curl > /dev/null 2>&1; then
+    echo "Cloudn't found command curl."
+    exit 1
+fi
+
+if [[ -z "$SLACK_TOKEN" ]]; then
+    echo "Missing environment variable \$SLACK_TOKEN." >&2
+    print_usage >&2
+    exit 2
+fi
+
+if [[ "$COMMAND" == "start" ]]; then
+    DURATION=${2:-}
+
+    if [[ -z "$DURATION" ]]; then
+        echo "Missing duration." >&2
+        print_usage >&2
+        exit 4
+    fi
+
+    curl --silent -X POST "https://slack.com/api/dnd.setSnooze?token=$SLACK_TOKEN&num_minutes=$DURATION" > /dev/null && echo "OK"
+
+elif [[ "$COMMAND" == "end" ]]; then
+
+    curl --silent -X POST "https://slack.com/api/dnd.endDnd?token=$SLACK_TOKEN" > /dev/null && echo "OK"
+
+else
+    if ! [[ -z "$COMMAND" ]]; then
+        echo "Command $COMMAND doesn't exists." >&2
+    fi
+
+    print_usage >&2
+    exit 3
+fi
+
