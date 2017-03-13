@@ -13,12 +13,12 @@ To start a "Do not Distrub" session run the following command:
 slack-dnd start 60
 ```
 
-*Note: Replace 60 with the time (in minutes) your session should be run.*
+*Note: Replace 60 with the time (in minutes) your session should run.*
 
 
 **end**
 
-To stop a current session immediately run:
+To stop the current session immediately run:
 
 ```
 slack-dnd stop
