@@ -8,7 +8,7 @@ COMMAND=${1:-}
 print_usage () {
     echo "Usage: start-dnd [start|end]"
     echo
-    echo "    start [duration]  Starts \"Do not Disturb\" for the defined duration"
+    echo "    start [duration]  Starts \"Do not Disturb\" with defined duration"
     echo "    end               Ends current \"Do not Disturb\" session"
     echo
     echo
@@ -19,7 +19,7 @@ print_usage () {
 }
 
 if ! hash curl > /dev/null 2>&1; then
-    echo "Cloudn't found command curl."
+    echo "Cloudn't find command curl."
     exit 1
 fi
 
@@ -46,7 +46,7 @@ elif [[ "$COMMAND" == "end" ]]; then
 
 else
     if ! [[ -z "$COMMAND" ]]; then
-        echo "Command $COMMAND doesn't exists." >&2
+        echo "Command $COMMAND doesn't exist." >&2
     fi
 
     print_usage >&2
